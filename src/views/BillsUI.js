@@ -5,11 +5,18 @@ import LoadingPage from "./LoadingPage.js"
 import Actions from './Actions.js'
 
 const row = (bill) => {
+  const date = new Date(bill.date);
+
+  const ye = new Intl.DateTimeFormat('fr', { year: 'numeric' }).format(date)
+  const mo = new Intl.DateTimeFormat('fr', { month: 'short' }).format(date)
+  const da = new Intl.DateTimeFormat('fr', { day: '2-digit' }).format(date)
+  const month = mo.charAt(0).toUpperCase() + mo.slice(1)
+
   return (`
     <tr>
       <td>${bill.type}</td>
       <td>${bill.name}</td>
-      <td>${bill.date}</td>
+      <td>${`${parseInt(da)} ${month.substr(0,3)}. ${ye.toString().substr(2,4)}`}</td>
       <td>${bill.amount} €</td>
       <td>${bill.status}</td>
       <td>
@@ -21,7 +28,10 @@ const row = (bill) => {
 
 const rows = (data) => {
   console.log(data);
-  return (data && data.length) ? data.sort((a, b) => new Date(b.date) - new Date(a.date)) .map(bill => row(bill)).join("") : ""
+  return (data && data.length) ? data.sort((a, b) => {
+    if(a.date < b.date) return 1;
+    return -1;
+  }).map(bill => row(bill)).join("") : "";
 }
 
 export default ({ data: bills, loading, error }) => {

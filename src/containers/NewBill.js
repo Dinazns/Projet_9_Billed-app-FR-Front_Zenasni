@@ -1,6 +1,11 @@
 import { ROUTES_PATH } from '../constants/routes.js'
 import Logout from "./Logout.js"
 
+// const formatDateToISO = (date) => {
+//   const [day, month, year] = date.split('/'); // Découper "DD/MM/YYYY"
+//   return `${year}-${month}-${day}`; // Retourner "YYYY-MM-DD"
+// };
+
 export default class NewBill {
   constructor({ document, onNavigate, store, localStorage }) {
     this.document = document
@@ -49,7 +54,8 @@ export default class NewBill {
       type: e.target.querySelector(`select[data-testid="expense-type"]`).value,
       name:  e.target.querySelector(`input[data-testid="expense-name"]`).value,
       amount: parseInt(e.target.querySelector(`input[data-testid="amount"]`).value),
-      date:  e.target.querySelector(`input[data-testid="datepicker"]`).value,
+      date:  (e.target.querySelector(`input[data-testid="datepicker"]`).value),
+      // date:  formatDateToISO(e.target.querySelector(`input[data-testid="datepicker"]`).value),
       vat: e.target.querySelector(`input[data-testid="vat"]`).value,
       pct: parseInt(e.target.querySelector(`input[data-testid="pct"]`).value) || 20,
       commentary: e.target.querySelector(`textarea[data-testid="commentary"]`).value,
