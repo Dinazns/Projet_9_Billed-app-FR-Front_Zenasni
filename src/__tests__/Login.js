@@ -7,6 +7,7 @@ import Login from "../containers/Login.js";
 import { ROUTES } from "../constants/routes";
 import { fireEvent, screen } from "@testing-library/dom";
 
+
 describe("Given that I am a user on login page", () => {
   describe("When I do not fill fields and I click on employee button Login In", () => {
     test("Then It should renders Login page", () => {
@@ -47,6 +48,8 @@ describe("Given that I am a user on login page", () => {
       expect(screen.getByTestId("form-employee")).toBeTruthy();
     });
   });
+
+  
 
   describe("When I do fill fields in correct format and I click on employee button Login In", () => {
     test("Then I should be identified as an Employee in app", () => {
@@ -116,6 +119,36 @@ describe("Given that I am a user on login page", () => {
     });
   });
 });
+
+// je vérifie le changement de style
+test("Given successful login, it should change body background color to white", async () => {
+  document.body.innerHTML = LoginUI();
+
+  const inputData = {
+    email: "johndoe@email.com",
+    password: "azerty",
+  };
+
+  const store = {
+    login: jest.fn().mockResolvedValueOnce({}),
+  };
+
+  const onNavigate = jest.fn();
+  const login = new Login({
+    document,
+    localStorage: window.localStorage,
+    onNavigate,
+    PREVIOUS_LOCATION: "",
+    store,
+  });
+
+  const form = screen.getByTestId("form-employee");
+  fireEvent.submit(form);
+
+  await new Promise(process.nextTick); // Wait for promises to resolve
+  expect(document.body.style.backgroundColor).toBe("rgb(255, 255, 255)");
+});
+
 
 describe("Given that I am a user on login page", () => {
   describe("When I do not fill fields and I click on admin button Login In", () => {
